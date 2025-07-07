@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <link rel="manifest" href="/manifest.json" />
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Shallow water equations | VisualPDE</title>
+<meta name="generator" content="Jekyll v3.10.0" />
+<meta property="og:title" content="Shallow water equations" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="We consider a form of the shallow water equations given by" />
+<meta property="og:description" content="We consider a form of the shallow water equations given by" />
+<link rel="canonical" href="https://visualpde.com/fluids/shallow_water.html" />
+<meta property="og:url" content="https://visualpde.com/fluids/shallow_water.html" />
+<meta property="og:site_name" content="VisualPDE" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2025-06-29T17:36:49+00:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Shallow water equations" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","dateModified":"2025-06-29T17:36:49+00:00","datePublished":"2025-06-29T17:36:49+00:00","description":"We consider a form of the shallow water equations given by","headline":"Shallow water equations","mainEntityOfPage":{"@type":"WebPage","@id":"https://visualpde.com/fluids/shallow_water.html"},"url":"https://visualpde.com/fluids/shallow_water.html"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/assets/main.css"><link type="application/atom+xml" rel="alternate" href="https://visualpde.com/feed.xml" title="VisualPDE" /><script
+  async
+  src="https://www.googletagmanager.com/gtag/js?id=G-ZDK91GRY6Y"
+></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag("js", new Date());
+  gtag("config", "G-ZDK91GRY6Y", { client_storage: "none" });
+  // If we're on localhost, disable GA.
+  if (location.hostname === "localhost" || location.hostname === "127.0.0.1") {
+    window["ga-disable-G-ZDK91GRY6Y"] = true;
+  }
+</script>
+<link rel="stylesheet" href="/assets/css/custom.css">
+<script src="/assets/js/jQuery.js"></script>
+<script src="/assets/js/make_target_blank.js" defer></script>
+<script src="/assets/js/run_only_one_sim.js"></script>
+<script src="../assets/fontawesome/solid.js" defer></script>
+<script src="../assets/fontawesome/fontawesome.min.js" defer></script>
+<script src="/assets/js/scroll_to_top_button.js" defer></script>
+<script src="/assets/js/vpde-inputs.min.js" defer></script>
+<script src="/assets/js/toc.js" defer></script><link rel="apple-touch-icon" sizes="180x180" href="/assets/favicons/apple-touch-icon.webp">
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicons/favicon-32x32.webp">
+  <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicons/favicon-16x16.webp">
+  <link rel="manifest" href="/assets/favicons/site.webmanifest">
+  <link rel="mask-icon" href="/assets/favicons/safari-pinned-tab.svg" color="#5bbad5">
+  <link rel="shortcut icon" href="/assets/favicons/favicon.ico">
+  <meta name="msapplication-TileColor" content="#da532c">
+  <meta name="msapplication-config" content="/assets/favicons/browserconfig.xml">
+  <meta name="theme-color" content="#dfdfdf">
+  <meta name="twitter:card" content="summary" /> 
+  
+  <meta name="description" content="Water waves and ripples" />
+  <meta name="twitter:site:id" content="@visualpde" /> 
+  <meta name="twitter:title" content="Shallow water equations | VisualPDE" /> 
+  <meta name="twitter:description" content="Water waves and ripples" /> 
+  <meta name="twitter:image" content="https://visualpde.com/assets/images/shallow-water-waves.webp" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Shallow water equations | VisualPDE" />
+  <meta property="og:description" content="Water waves and ripples" />
+  <meta property="og:image" content="https://visualpde.com/assets/images/shallow-water-waves.webp" />
+  <meta property="og:url" content="https://visualpde.com" />
+  <meta property="og:site_name" content="VisualPDE" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="google-site-verification" content="ugeW31yIRGSztE-CPYG3CnFCObe7pqk91umfk06TSAI"/>
+
+  <script src="/assets/js/dark_mode.js"></script>
+	
+	<script src="/assets/js/load_manifests.js"></script>
+
+  <script>
+    // If the window is very narrow, use a smaller domain in any iframe simulations.
+    if (window.innerWidth < 600) {
+      window.addEventListener("DOMContentLoaded", function() {
+        // For each .sim element without an sf parameter in the query string, modify the URL to include a domain scale factor.
+        [...document.getElementsByClassName('sim')].forEach(el => {
+          const url = new URL(el.src);
+          if (/[?&]/.test(url.search)) {
+            const params = new URLSearchParams(url.search);
+            // If there's an sf specified, do not modify.
+            if (!params.has("sf")) {
+              el.src += "&sf=0.5";
+            }
+          } else {
+            el.src += "?sf=0.5";
+          }
+        })
+      });
+    }
+  </script>
+
+  <script>
+    // If we're on mobile, replace click with tap and clicking with tapping.
+    if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+      window.addEventListener("DOMContentLoaded", function() {
+        $('p,span,h1,h2,h3,h4,h5').each(function(index, element){
+          let str = element.innerHTML;
+          str = str.replaceAll(/\bclicked\b/g, "tapped");
+          str = str.replaceAll(/\bClicked\b/g, "Tapped");
+          str = str.replaceAll(/\bclicking\b/g, "tapping");
+          str = str.replaceAll(/\bClicking\b/g, "Tapping");
+          str = str.replaceAll(/\bclick\b/g, "tap");
+          str = str.replaceAll(/\bClick\b/g, "Tap");
+          element.innerHTML = str;
+        });
+      });
+    }
+
+    // Add a non-breaking zero-width space after all – in anchor tags.
+    window.addEventListener("DOMContentLoaded", function() {
+      $('a').each(function(index, element){
+        element.innerHTML = element.innerHTML.replaceAll(/–/g, "–&#65279;");
+      });
+    });
+  </script>		
+
+  <script src="/sim/scripts/register_sw.js" async></script>
+
+</head><script type="module" src="/assets/js/related_posts.js" async></script>
+
+  <body><header class="site-header">
+    <div class="wrapper"><script src="/assets/js/lunr.js"></script>
+
+<form id="siteSearchForm"
+onSubmit="site_search(document.getElementById('siteSearchInput').value); return false;"
+>
+<p>
+    <label for="siteSearchInput" id="search-button" title="Search" tabindex="-1"><i class="fa-solid fa-magnifying-glass"></i></label>
+    <div id="siteSearchBar">
+    <input
+      type="text"
+      id="siteSearchInput"
+      name="q"
+      maxlength="255"
+      value=""
+      placeholder="Search"
+      autocomplete="off"
+      onfocus="document.getElementById('siteSearchForm').onsubmit();window.gtag?.('event', 'site_search');"
+      oninput="document.getElementById('siteSearchForm').onsubmit();"
+      />
+      <div id="siteSearchResults">
+        <ul></ul>
+      </div>
+    </div>
+  </p>
+</form>
+
+<script src="/assets/js/search.js" async></script>
+
+            <link rel="preload" as="image" href="/assets/images/2heart-and-title-light.webp"/>
+            <link rel="preload" as="image" href="/assets/images/2heart-dark.webp"/>
+        
+        <a class="site-title" rel="author" href="/">
+            
+                <img
+                    class="light-mode-img"
+                    src="/assets/images/2heart-and-title-light.webp"
+                    alt="VisualPDE and a heart-shaped logo"
+                /><img
+                    class="dark-mode-img"
+                    src="/assets/images/2heart-and-title-dark.webp"
+                    alt="VisualPDE and a heart-shaped logo"
+                />
+            
+        </a><nav class="site-nav">
+            <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+            <label for="nav-trigger">
+                <span class="menu-icon">
+                <svg viewBox="0 0 18 15" width="18px" height="15px">
+                    <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+                </svg>
+                </span>
+            </label>
+
+            <div class="trigger"><a class="page-link" href="/explore.html">Explore</a><a class="page-link" href="/create.html">Create</a><a class="page-link" href="/contact.html">Contact</a><a class="page-link" href="/about/">About</a><div class="gap"></div>
+                <a class="nav-button" href="/sim/">Simulator</a>
+            </div>
+        </nav></div>
+</header>
+
+<noscript><p class="noscript">VisualPDE makes heavy use of JavaScript to enable in-browser simulations.<br>We recommend that you enable JavaScript in your browser settings to fully experience the site.</p></noscript><main class="page-content" aria-label="Content">
+      <div class="wrapper">
+
+        <header class="post-header">
+          <h1 class="post-title">Shallow water equations</h1>
+          <div class="tag_list">
+        </div>
+        </header>
+        <!-- If categories have been given, assign them to a JS variable and assign links to them in the tag_list -->
+        <script>
+          window.specifiedCategories = [];
+          
+          window.specifiedCategories = ["fluids","waves","integrable","parabolic"];
+          
+          if (window.specifiedCategories.length > 0) {
+            // Sort the categories alphabetically
+            window.specifiedCategories.sort();
+            var tag_list = document.getElementsByClassName("tag_list")[0];
+            for (var i = 0; i < window.specifiedCategories.length; i++) {
+              var tag = window.specifiedCategories[i];
+              var tag_link = document.createElement("a");
+              // URI encode the tag and add it to the URL as an anchor on the explore page.
+              tag_link.href = "/explore.html#" + encodeURIComponent(tag);
+              // Format the tag so that each word has the first letter captialised.
+              tag_link.innerHTML = tag.split(" ").map(function(word) {
+                return word.charAt(0).toUpperCase() + word.slice(1);
+              }).join(" ");
+              tag_list.appendChild(tag_link);
+              // If there is another category, add a space and a |.
+              if (i < window.specifiedCategories.length - 1) {
+                tag_list.innerHTML += " | ";
+              }
+            }
+          }
+
+        </script>
+
+        <p>We consider a form of the <a href="https://en.wikipedia.org/wiki/Shallow_water_equations">shallow water equations</a> given by</p>
+
+\[\begin{aligned}
+      \pd{h}{t} &amp;= - \left( \pd{u}{x} +  \pd{v}{y}\right) \left(h+H_{e}\right)-\left( \pd{h}{x} u+ \pd{h}{y} v\right)-\varepsilon h,\\
+      \pd{u}{t} &amp;= \nu \nabla^2  u -g \pd{h}{x} - k u-u  \pd{u}{x}-v  \pd{u}{y}+f v,\\
+      \pd{v}{t} &amp;= \nu \nabla^2  v -g  \pd{h}{y} - k v-u  \pd{v}{x}-v  \pd{v}{y}-f u,
+    \end{aligned}\]
+
+<p>where $h$ is is the water height, $u$ and $v$ are the fluid velocities in $x$ and $y$ directions, and all of the parameters are as described in the article linked above except for $H_e$ replacing the mean height of the surface $H$, and the term involving $\varepsilon$ representing a weak dissipation of the wave height $h$. The terms involving $k$ and $\varepsilon$ lead to dissipation of the waves, and can be understood either as phenomenological drag coefficients, or derived from considering friction at the bottom surface or vertical diffusion of mass and momentum.</p>
+
+<ul>
+  <li>
+    <p>Load the interactive <a href="/sim/?preset=ShallowWaterEqns">shallow water equations model</a>.</p>
+  </li>
+  <li>
+    <p>Click to initiate a wave at a point on the surface, which will reflect off of the boundaries.</p>
+  </li>
+</ul>
+
+<p>A linearised version of this model underlies the Visual Story <a href="/visual-stories/ripples">Ripples on a Pond</a>.</p>
+
+<h1 id="the-world-turning">The World Turning</h1>
+
+<p>The simulation above sets $f=0$, representing no influence of the fluid from the <a href="https://en.wikipedia.org/wiki/Coriolis_force">Coriolis force</a>. This force accounts for inertia due to a rotating frame of reference such as in a spinning wave tank or in the Earth’s oceans. We can get a sense for how this rotation influences the fluid flow in a few different ways.</p>
+
+<ul>
+  <li>
+    <p>We first consider an initial condition of a sharp gradient in wave height $h$ in this <a href="/sim/?preset=ShallowWaterEqnsDamBreaking">dam breaking model</a>. Initially we have set $f=0$, but if you instead make it larger (e.g. $f=0.4$ or even $f=1$) and restart the simulation with <span class="ui_button_documentation"><i class="fa-solid fa-arrow-rotate-left"></i></span>, you can see that this force can stabilise the front of the wave after an initial transient. This is a counter-intuitive result indicating that different parts of the ocean can be deeper than others due to Coriolis forces.</p>
+  </li>
+  <li>
+    <p>If we instead set $f=1$, and plot the vorticity $\omega=\pd{v}{x}-\pd{u}{y}$ in colour, we can simulate a <a href="/sim/?preset=ShallowWaterEqnsVorticalSolitons">model with geostrophically balanced vortices</a>. Clicking will place such a solution on the domain, which has a positive vorticity inside of it, indicating an anti-clockwise rotation. You can press for longer periods of time to make deeper vortices, and rotate the 3D solution around to see how these look like underneath the surface.</p>
+  </li>
+</ul>
+
+<h1 id="1d-solitary-waves">1D Solitary Waves</h1>
+
+<p>We can also study one-dimensional versions of this model to observe soliton-like travelling waves. This <a href="/sim/?preset=1DShallowWaterEqns">nonlinear solitary wave model</a> can be compared to a <a href="/sim/?preset=1DLinearizedShallowWaterEqns">linearised solitary wave model</a>, showing qualitatively comparable behaviour but quantitative differences, particularly as the solutions evolve over time.</p>
+
+<p>The simulations above came out of discussions with <a href="https://mncrowe.github.io/">Matthew Crowe</a>, who generously provided feedback on constructing this page.</p>
+
+<h1 id="shear-instability">Shear instability</h1>
+
+<p>Another thing we can demonstrate with this model is a shear (or <a href="https://en.wikipedia.org/wiki/Kelvin%E2%80%93Helmholtz_instability">Kelvin-Helmholtz</a>) instability. This <a href="/sim/?preset=ShearInstability">simulation of a shear instability</a> plots the vorticity of a fluid with a variation in the $u$ velocity. Slightly perturbing the initial line (caused by the shearing fluid) induces several vortices which then `roll-up’ due to mutual attraction.</p>
+
+<p>This helpfully provided by <a href="https://www.uml.edu/profile/mathew_barlow">Mathew Barlow</a>.</p>
+
+
+        
+        <hr style="margin-top:2em;margin-bottom:2em;color:var(--tile-border-color)">
+      </div>
+      
+      <div id="related_posts_wrapper" class="hiddenPost">
+        
+        <p class="emphasize" id="try_out_highlight">Looking for something similar? Try out these related examples:</p>
+
+        <div id="related_posts-container" class="hiddenPost">
+            <a class='topic_tile related_post hiddenPost'>
+              <div class='topic_banner'>
+              </div>
+              <div class='container'>
+                <div class='title'></div>
+                <div class='subtitle'></div>
+              </div>
+            </a>
+            <a class='topic_tile related_post hiddenPost'>
+              <div class='topic_banner'>
+              </div>
+              <div class='container'>
+                <div class='title'></div>
+                <div class='subtitle'></div>
+              </div>
+            </a>
+            <a class='topic_tile related_post hiddenPost'>
+              <div class='topic_banner'>
+              </div>
+              <div class='container'>
+                <div class='title'></div>
+                <div class='subtitle'></div>
+              </div>
+            </a>
+        </div>
+      </div>
+
+    </main>
+
+    <!-- If there are any related posts specified in the frontmatter, initialise a JS variable with those posts as strings -->
+    <script>
+      window.specifiedRelatedPosts = [];
+      
+    </script>
+
+    <!-- If tags have been specified, initialise a JS variable so that links can be added --><footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">VisualPDE
+            <button class="darkmode-button" id="dark-on" onclick="toggleDarkMode(true,true)"><span><i class="fa-solid fa-moon"></i>Dark mode</span></button>
+            <button class="darkmode-button" id="light-on" onclick="toggleDarkMode(false,true)"><span><i class="fa-solid fa-sun"></i>Light mode</span></button>
+    </h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list"><li><a class="u-email" href="mailto:hello@visualpde.com">hello@visualpde.com</a></li><li class="p-name">
+            <p style="margin-bottom:0;">Read the <a style="color:unset;" href="https://doi.org/10.1007/s11538-023-01218-4">paper</a></p>
+            </li>
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-2"><ul class="social-media-list"></ul>
+</div>
+
+      <div class="footer-col footer-col-3">
+        <p>Interactive solutions of partial differential equations, live on your device</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+
+<div id="reading-progress-gutter" style="display:none"></div>
+<div id="reading-progress" style="display:none"></div>
+<script src="/assets/js/reading_progress.js"></script><script type="text/javascript">
+    window.MathJax = {
+        loader: {
+            load: ['ui/menu', '[tex]/ams']
+        },
+        tex: {
+            macros: {
+                pd: ["\\frac{\\partial #1}{\\partial #2}", 2],
+                pdd: ["\\frac{\\partial^2 #1}{\\partial #2^2}", 2],
+                pdn: ["\\frac{\\partial^{#3} #1}{\\partial #2^{#3}}", 3],
+                vnabla: "\\boldsymbol{\\nabla}",
+                m: ["{\\large\\symbfsfit{#1}}", 1],
+                v: ["\\boldsymbol{#1}", 1],
+                d: "\\mathrm{d}",
+                i: "\\mathrm{i}",
+                dx: "\\mathrm{dx}",
+                dy: "\\mathrm{dy}",
+                dt: "\\mathrm{dt}",
+                stepx: "\\Delta\\mathrm{x}",
+                stepy: "\\Delta\\mathrm{y}",
+                stept: "\\Delta\\mathrm{t}",
+                domain: "\\mathit{\\Omega}",
+                boundary: "\\partial\\mathit{\\Omega}",
+                onboundary: "\\vert_{\\boundary}",
+                floor: ["\\left\\lfloor#1\\right\\rfloor", 1],
+                ind: ["\\mathbb{1}_{#1}", 1],
+                diff: ["\\frac{\\d #1}{\\d #2}", 2],
+                abs: ["\\left\\lvert#1\\right\\rvert", 1],
+                e: "\\mathrm{e}"
+            },
+            inlineMath: [['$', '$'], ['\\(', '\\)']]
+        },
+        startup: {
+            ready: () => {
+                MathJax.startup.defaultReady();
+                MathJax.startup.promise.then(() => {
+                    fitty("mjx-container[display='true']", { minSize: 5, maxSize: 32 });
+                    jQuery('mjx-container[display="true"]').css("width", "100%");
+
+                    fitty(".subtitle_equation mjx-container", { minSize: 5, maxSize: 16 });
+                    // jQuery('.subtitle_equation mjx-container').css("width", "100%");
+                });
+            }
+        }
+    };
+</script>
+
+<!-- Only load MathJax if we're not at root of the site, speeding up blocking load -->
+<script type="text/javascript">
+    if (!window.location.pathname.match(/^\/$/)) {
+        document.write('<script id="MathJax-script" async src="../assets/js/mathjax/es5/tex-chtml-full.js"><\/script>')
+    }
+</script>
+
+<script src="../assets/js/fitty.min.js"></script>
+</body>
+
+</html>
